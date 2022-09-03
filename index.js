@@ -4,6 +4,8 @@ const PORT = 5000 || "https://node-mongo-assignment-1.vercel.app/";
 const app = express();
 const fs = require("fs");
 const http = require("http");
+const userData = require('./userData.json')
+
 // const userRoute = require('./routes/usersRoute')
 // const defaultRoute = require('./routes/defaultRoute')
 
@@ -24,11 +26,10 @@ app.get("/user/all", (req, res) => {
                 // console.log(convertedData);
                 res.write(data);
                 res.end();
-            }
-            catch (err) {
+            } catch (err) {
                 res.write(err);
                 res.end();
-            } 
+            }
         });
     }
 });
@@ -50,10 +51,43 @@ app.get("/user/random", async (req, res) => {
                 console.log(stringifiedRandomData);
                 res.write(stringifiedRandomData);
                 res.end();
-            }
-            catch (err){
+            } catch (err) {
                 res.write(err);
                 res.end();
+            }
+        });
+    }
+});
+
+app.post("/user/save", (req, res) => {
+    const randomNumber = Math.floor((Math.random()*(100 - 10)) + 1);
+    console.log(randomNumber);
+    const insertData = {
+        id:randomNumber,
+        name: "Abdullah",
+        gender: "male",
+        email: "abc@gmail.com",
+        address: "Bangladesh",
+        phone: "01234567892",
+    };
+
+    if (req.url == "/user/save") {
+        const rawData = fs.readFileSync('userData.json')
+        console.log(rawData);
+        const parsedData = JSON.parse(rawData)
+        console.log(parsedData);
+        const newArray = [...parsedData,insertData]
+        console.log(newArray);
+        const stringifiedData = JSON.stringify(newArray);
+        console.log(stringifiedData);
+        fs.writeFile("userData.json", stringifiedData, (err) => {
+            try {
+                console.log(stringifiedData);
+                userData.push(stringifiedData)
+                res.write("Successfully Data Added");
+                res.end();
+            } catch (error) {
+                res.write("Oops! something error!");
             }
         });
     }
