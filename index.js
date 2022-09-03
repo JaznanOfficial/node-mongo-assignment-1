@@ -13,14 +13,11 @@ const http = require("http");
 // res.send('Oops, you are in wrong route. please go to right url')
 // })
 
-app.get("/user/all", async (req, res) => {
+app.get("/user/all", (req, res) => {
     // console.log(req.url);
     if (req.url == "/user/all") {
         fs.readFile("userData.json", (err, data) => {
-            if (err) {
-                res.write("failed to get data!!!");
-                res.end();
-            } else {
+            try {
                 // const buf = fs.readFileSync("userData.json");
                 // const convertedData = buf.toString("utf8");
 
@@ -28,6 +25,10 @@ app.get("/user/all", async (req, res) => {
                 res.write(data);
                 res.end();
             }
+            catch (err) {
+                res.write(err);
+                res.end();
+            } 
         });
     }
 });
@@ -36,21 +37,22 @@ app.get("/user/random", async (req, res) => {
     console.log(req.url);
     if (req.url == "/user/random") {
         fs.readFile("userData.json", (err, data) => {
-            if (err) {
-                res.write("failed to get data!!!");
-                res.end();
-            } else {
-                const buf = fs.readFileSync("userData.json");
-                const decodedData = buf.toString("utf8");
-                const convertedData = JSON.parse(decodedData)
+            try {
+                const buf = fs.readFileSync("userData.json").toString("utf8");
+                // const decodedData = buf.toString("utf8");
+                const convertedData = JSON.parse(buf);
                 console.log(convertedData.length);
                 const randomNumber = Math.floor(Math.random() * convertedData.length);
                 console.log(randomNumber);
                 // console.log(data);
                 const randomData = convertedData[randomNumber];
-                const stringifiedRandomData = JSON.stringify(randomData)
+                const stringifiedRandomData = JSON.stringify(randomData);
                 console.log(stringifiedRandomData);
                 res.write(stringifiedRandomData);
+                res.end();
+            }
+            catch (err){
+                res.write(err);
                 res.end();
             }
         });
