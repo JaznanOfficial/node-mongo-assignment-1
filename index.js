@@ -1,6 +1,6 @@
 const { json } = require('express');
 const express = require('express')
-const PORT = 5000;
+const PORT = 5000 || 'https://node-mongo-assignment-1.vercel.app/';
 const app = express()
 const fs = require('fs')
 const http = require('http')
