@@ -1,15 +1,34 @@
+const { json } = require('express');
 const express = require('express')
 const PORT = 5000;
 const app = express()
-const userRoute = require('./routes/usersRoute')
+const fs = require('fs')
+const http = require('http')
+// const userRoute = require('./routes/usersRoute')
+// const defaultRoute = require('./routes/defaultRoute')
 
-app.use('/', (req, res) => {
-    res.send('<h1>This is node mongo assignment-1 server</h1>')
-})
-app.use('/user', userRoute)
-app.all('*', (req, res) => {
-    res.send('Oops, you are in wrong route. please go to right url')
-})
 
+// app.use('/', defaultRoute)
+// app.use('/user', userRoute)
+// app.all('*', (req, res) => {
+    // res.send('Oops, you are in wrong route. please go to right url')
+// })
+
+
+app.get('/user/all',(req, res) => {
+    // console.log(req.url);
+    if (req.url == '/user/all') {
+        fs.readFile('userData.json', (err, data) => {
+            if (err) {
+                res.write('failed to get data!!!')
+                res.end()
+            }
+            else {
+                res.write(data)
+                res.end()
+            }
+        })
+    }
+})
 
 app.listen(PORT, console.log('server is running on port', PORT))
