@@ -4,16 +4,7 @@ const PORT = 5000 || "https://node-mongo-assignment-1.vercel.app/";
 const app = express();
 const fs = require("fs");
 const http = require("http");
-const userData = require('./userData.json')
-
-// const userRoute = require('./routes/usersRoute')
-// const defaultRoute = require('./routes/defaultRoute')
-
-// app.use('/', defaultRoute)
-// app.use('/user', userRoute)
-// app.all('*', (req, res) => {
-// res.send('Oops, you are in wrong route. please go to right url')
-// })
+const userData = require("./userData.json");
 
 app.get("/user/all", (req, res) => {
     // console.log(req.url);
@@ -60,10 +51,10 @@ app.get("/user/random", async (req, res) => {
 });
 
 app.post("/user/save", (req, res) => {
-    const randomNumber = Math.floor((Math.random()*(100 - 10)) + 1);
+    const randomNumber = Math.floor(Math.random() * (100 - 10) + 1);
     console.log(randomNumber);
     const insertData = {
-        id:randomNumber,
+        id: randomNumber,
         name: "Abdullah",
         gender: "male",
         email: "abc@gmail.com",
@@ -72,18 +63,18 @@ app.post("/user/save", (req, res) => {
     };
 
     if (req.url == "/user/save") {
-        const rawData = fs.readFileSync('userData.json')
+        const rawData = fs.readFileSync("userData.json");
         console.log(rawData);
-        const parsedData = JSON.parse(rawData)
+        const parsedData = JSON.parse(rawData);
         console.log(parsedData);
-        const newArray = [...parsedData,insertData]
+        const newArray = [...parsedData, insertData];
         console.log(newArray);
         const stringifiedData = JSON.stringify(newArray);
         console.log(stringifiedData);
         fs.writeFile("userData.json", stringifiedData, (err) => {
             try {
                 console.log(stringifiedData);
-                userData.push(stringifiedData)
+                userData.push(stringifiedData);
                 res.write("Successfully Data Added");
                 res.end();
             } catch (error) {
