@@ -73,15 +73,47 @@ app.post("/user/save", (req, res) => {
         console.log(stringifiedData);
         fs.writeFile("userData.json", stringifiedData, (err) => {
             try {
-                console.log(stringifiedData);
-                userData.push(stringifiedData);
+                // console.log(stringifiedData);
+                // userData.push(stringifiedData);
                 res.write("Successfully Data Added");
                 res.end();
             } catch (error) {
                 res.write("Oops! something error!");
+                res.end()
             }
         });
     }
+});
+
+app.delete("/user/delete/:id", (req, res) => {
+    
+    const id = Number(req.params.id) ;
+    console.log(id);
+    // const parsedId = JSON.stringify(id)
+    // console.log(parsedId);
+   
+        const rawData = fs.readFileSync("userData.json");
+        // console.log(rawData);
+        const parsedData = JSON.parse(rawData);
+        // console.log(parsedData);
+        // const newArray = [...parsedData, insertData];
+        // console.log(newArray);
+    const filteredData = parsedData.filter(singleData => singleData.id !== id)
+    // console.log(filteredData);
+        const stringifiedData = JSON.stringify(filteredData);
+        console.log(stringifiedData);
+        fs.writeFile("userData.json", stringifiedData, (err) => {
+            try {
+                // console.log(stringifiedData);
+                // userData.push(stringifiedData);
+                res.write("Successfully Data Added");
+                res.end();
+            } catch (error) {
+                res.write("Oops! something error!");
+                res.end()
+            }
+        });
+    
 });
 
 app.listen(PORT, console.log("server is running on port", PORT));

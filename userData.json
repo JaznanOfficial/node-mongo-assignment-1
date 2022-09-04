@@ -208,5 +208,13 @@
       "catchPhrase": "Centralized empowering task-force",
       "bs": "target end-to-end models"
     }
+  },
+  {
+    "id": 4,
+    "name": "Abdullah",
+    "gender": "male",
+    "email": "abc@gmail.com",
+    "address": "Bangladesh",
+    "phone": "01234567892"
   }
 ]
